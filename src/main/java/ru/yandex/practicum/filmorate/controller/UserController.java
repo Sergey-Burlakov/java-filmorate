@@ -56,13 +56,13 @@ public class UserController {
         User oldUser = users.get(userWithUpdates.getId());
         User candidateUser = new User(oldUser);
 
-        if (userWithUpdates.getEmail() != null && (!userWithUpdates.getEmail().isBlank())){
+        if (userWithUpdates.getEmail() != null && (!userWithUpdates.getEmail().isBlank())) {
             candidateUser.setEmail(userWithUpdates.getEmail());
         }
-        if (userWithUpdates.getLogin() != null && (!userWithUpdates.getLogin().isBlank())){
+        if (userWithUpdates.getLogin() != null && (!userWithUpdates.getLogin().isBlank())) {
             candidateUser.setLogin(userWithUpdates.getLogin());
         }
-        if (userWithUpdates.getName() != null && (!userWithUpdates.getName().isBlank())){
+        if (userWithUpdates.getName() != null && (!userWithUpdates.getName().isBlank())) {
             candidateUser.setName(userWithUpdates.getName());
         } else {
             setDefaultNameIfEmpty(candidateUser);
