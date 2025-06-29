@@ -67,7 +67,7 @@ public class UserController {
         } else {
             setDefaultNameIfEmpty(candidateUser);
         }
-        if (userWithUpdates.getBirthday() != null){
+        if (userWithUpdates.getBirthday() != null) {
             candidateUser.setBirthday(userWithUpdates.getBirthday());
         }
 
@@ -97,7 +97,7 @@ public class UserController {
         if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             throw new ValidationException("Логин не может быть пустым и содержать пробелы");
         }
-        if (user.getBirthday() == null){
+        if (user.getBirthday() == null) {
             throw new ValidationException("Дата рождения не может быть пуста");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
