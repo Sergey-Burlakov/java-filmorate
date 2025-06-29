@@ -50,7 +50,7 @@ public class FilmController {
             throw new ValidationException(message);
         }
         if (!films.containsKey(filmWithUpdates.getId())) {
-            String message = String.format("Фильм Id = %d не найден\n",filmWithUpdates.getId());
+            String message = String.format("Фильм Id = %d не найден\n", filmWithUpdates.getId());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 

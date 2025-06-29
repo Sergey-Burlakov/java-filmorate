@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,7 +14,7 @@ class FilmControllerTest {
     Film film;
 
     @BeforeEach
-    void serializeFilmBefore(){
+    void serializeFilmBefore() {
         film = new Film();
         film.setName("Интерстеллар");
         film.setDescription("Девятый полнометражный фильм режиссёра Кристофера Нолана");
@@ -27,37 +26,37 @@ class FilmControllerTest {
     void testCreateExceptionNullName() {
         film.setName("");
         assertThrows(ResponseStatusException.class, () -> {
-                    filmController.create(film);
-                }, "Не отработало исключение при создании фильма с пустым именем");
+            filmController.create(film);
+        }, "Не отработало исключение при создании фильма с пустым именем");
     }
 
     @Test
     void testCreateMaxLenghtDescription() {
         film.setDescription(
                 "Эпическая научная фантастика 2014 года, девятый полнометражный фильм режиссёра Кристофера Нолана," +
-                " который написал сценарий в соавторстве со своим братом Джонатаном. Действие фильма" +
-                " разворачивается в антиутопическом будущем, где Земля страдает от катастрофического упадка" +
-                " и голода.");
+                        " который написал сценарий в соавторстве со своим братом Джонатаном. Действие фильма" +
+                        " разворачивается в антиутопическом будущем, где Земля страдает от катастрофического упадка" +
+                        " и голода.");
         assertThrows(ResponseStatusException.class, () -> {
-                    filmController.create(film);
-                }, "Не отработало исключение при создании фильма с длинным описанием");
+            filmController.create(film);
+        }, "Не отработало исключение при создании фильма с длинным описанием");
     }
 
     @Test
-    void testCreateBeforeMovieBirhday(){
+    void testCreateBeforeMovieBirhday() {
         film.setReleaseDate(LocalDate.of(1894, 11, 6));
         assertThrows(ResponseStatusException.class, () -> {
-                    filmController.create(film);
-                }, "Не отработало исключение при создании фильма дата релиза которого раньше" +
-                        " 28 декабря 1895 года");
+            filmController.create(film);
+        }, "Не отработало исключение при создании фильма дата релиза которого раньше" +
+                " 28 декабря 1895 года");
     }
 
     @Test
-    void testCreatePositiveDuration(){
+    void testCreatePositiveDuration() {
         film.setDuration(-169);
         assertThrows(ResponseStatusException.class, () -> {
-                    filmController.create(film);
-                }, "Не отработало исключение при создании фильма с отрицательной продолжительностью");
+            filmController.create(film);
+        }, "Не отработало исключение при создании фильма с отрицательной продолжительностью");
 
     }
 }

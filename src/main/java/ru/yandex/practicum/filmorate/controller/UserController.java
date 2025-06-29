@@ -49,7 +49,7 @@ public class UserController {
             throw new ValidationException("id должен быть заполнен");
         }
         if (!users.containsKey(userWithUpdates.getId())) {
-            String message = String.format("Пользователь Id = %d не найден\n",userWithUpdates.getId());
+            String message = String.format("Пользователь Id = %d не найден\n", userWithUpdates.getId());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, message);
         }
 
@@ -80,8 +80,8 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
-        users.put(candidateUser.getId(),candidateUser);
-        log.info("Пользователь Id = {}, Login = {} успешно обновлен", candidateUser.getId(),candidateUser.getLogin());
+        users.put(candidateUser.getId(), candidateUser);
+        log.info("Пользователь Id = {}, Login = {} успешно обновлен", candidateUser.getId(), candidateUser.getLogin());
         return candidateUser;
     }
 

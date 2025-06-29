@@ -7,23 +7,23 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserControllerTest {
     UserController userController = new UserController();
     User user;
 
     @BeforeEach
-    void serializeUserBefore(){
+    void serializeUserBefore() {
         user = new User();
         user.setEmail("litunovskiy.vitaliy@yandex.ru");
         user.setLogin("litvitnik");
         user.setName("Виталий Литуновский");
-        user.setBirthday(LocalDate.of(1997,12,18));
+        user.setBirthday(LocalDate.of(1997, 12, 18));
     }
 
     @Test
-    void testCreateExceptionNullEmai(){
+    void testCreateExceptionNullEmai() {
         user.setEmail(" ");
         assertThrows(ResponseStatusException.class, () -> {
             userController.create(user);
@@ -31,7 +31,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testCreateExceptionInvalidEmai(){
+    void testCreateExceptionInvalidEmai() {
         user.setEmail("yandex.ru");
         assertThrows(ResponseStatusException.class, () -> {
             userController.create(user);
@@ -39,7 +39,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testCreateExceptionNullLogin(){
+    void testCreateExceptionNullLogin() {
         user.setLogin("");
         assertThrows(ResponseStatusException.class, () -> {
             userController.create(user);
@@ -47,7 +47,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testCreateExceptionWithSpaseInLogin(){
+    void testCreateExceptionWithSpaseInLogin() {
         user.setLogin("Litunovskiy Vitaliy");
         assertThrows(ResponseStatusException.class, () -> {
             userController.create(user);
@@ -55,7 +55,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testCreateExceptionNullBirthday(){
+    void testCreateExceptionNullBirthday() {
         user.setBirthday(null);
         assertThrows(ResponseStatusException.class, () -> {
             userController.create(user);
@@ -63,8 +63,8 @@ class UserControllerTest {
     }
 
     @Test
-    void testCreateExceptionFutureBirthday(){
-        user.setBirthday(LocalDate.of(2077,12,18));
+    void testCreateExceptionFutureBirthday() {
+        user.setBirthday(LocalDate.of(2077, 12, 18));
         assertThrows(ResponseStatusException.class, () -> {
             userController.create(user);
         }, "Не отработало исключение при создании пользователя с будущим днем рождения");
