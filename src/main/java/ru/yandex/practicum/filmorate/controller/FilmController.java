@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final LocalDate MOVIE_BIRTHDAY = LocalDate.of(1895, Month.DECEMBER, 28);
+    private static final LocalDate MOVIE_BIRTHDAY = LocalDate.of(1895, Month.DECEMBER, 28);
 
     private final Map<Long, Film> films = new HashMap<>();
 
@@ -57,16 +57,16 @@ public class FilmController {
         Film oldFilm = films.get(filmWithUpdates.getId());
         Film candidateFilm = new Film(oldFilm);
 
-        if (filmWithUpdates.getName() != null && (!filmWithUpdates.getName().isBlank())){
+        if (filmWithUpdates.getName() != null && (!filmWithUpdates.getName().isBlank())) {
             candidateFilm.setName(filmWithUpdates.getName());
         }
-        if (filmWithUpdates.getDescription() != null && (!filmWithUpdates.getDescription().isBlank())){
+        if (filmWithUpdates.getDescription() != null && (!filmWithUpdates.getDescription().isBlank())) {
             candidateFilm.setDescription(filmWithUpdates.getDescription());
         }
-        if (filmWithUpdates.getReleaseDate() != null ){
+        if (filmWithUpdates.getReleaseDate() != null ) {
             candidateFilm.setReleaseDate(filmWithUpdates.getReleaseDate());
         }
-        if ((filmWithUpdates.getDuration() != 0)){
+        if ((filmWithUpdates.getDuration() != 0)) {
             candidateFilm.setDuration(filmWithUpdates.getDuration());
         }
 
