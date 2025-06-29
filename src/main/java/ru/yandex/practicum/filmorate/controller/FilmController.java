@@ -33,7 +33,7 @@ public class FilmController {
             log.info("Валидация фильма при создании" +
                     " Id = {} Name = {} прошла успешно.", film.getName(), film.getId());
         } catch (ValidationException e) {
-            log.error("Ошибка валидации фильма при создании {}", e.getMessage());
+            log.error("Ошибка валидации фильма при создании: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         film.setId(getNextId());
@@ -75,7 +75,7 @@ public class FilmController {
             log.info("Валидация фильма при обновлении" +
                     " Id = {} Name = {} прошла успешно.", candidateFilm.getName(), candidateFilm.getId());
         } catch (ValidationException e) {
-            log.error("Ошибка валидации фильма при обновлении {}", e.getMessage());
+            log.error("Ошибка валидации фильма при обновлении: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 

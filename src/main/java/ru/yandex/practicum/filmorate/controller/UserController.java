@@ -7,9 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +31,7 @@ public class UserController {
             log.info("Валидация пользователя при создании" +
                     " Id = {} Login = {} прошла успешно.", user.getLogin(), user.getId());
         } catch (ValidationException e) {
-            log.error("Ошибка валидации пользователя при создании {}", e.getMessage());
+            log.error("Ошибка валидации пользователя при создании: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         user.setId(getNextId());
@@ -78,7 +76,7 @@ public class UserController {
             log.info("Валидация пользователя при обновлении" +
                     " Id = {} Login = {} прошла успешно.", candidateUser.getLogin(), candidateUser.getId());
         } catch (ValidationException e) {
-            log.error("Ошибка валидации пользователя при обновлении {}", e.getMessage());
+            log.error("Ошибка валидации пользователя при обновлении: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
