@@ -76,6 +76,5 @@ class FilmServiceTest {
         assertThrows(ValidationException.class, () -> {
             filmService.create(film);
         }, "Не отработало исключение при создании фильма с отрицательной продолжительностью");
-
     }
 }
