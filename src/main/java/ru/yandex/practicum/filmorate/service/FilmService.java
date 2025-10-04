@@ -62,9 +62,20 @@ public class FilmService {
         }
         if ((film.getDuration() != 0) && (film.getDuration() != oldFilm.getDuration())) {
             candidateFilm.setDuration(film.getDuration());
-            log.debug("FilmId = {} изменился параметр вuration. Новое значение «{}» старое значение «{}»",
+            log.debug("FilmId = {} изменился параметр Duration. Новое значение «{}» старое значение «{}»",
                     film.getId(), film.getDuration(), oldFilm.getDuration());
         }
+        if (film.getMpa() != null) {
+            candidateFilm.setMpa(film.getMpa());
+            log.debug("FilmId = {} изменился параметр Mpa. Новое значение «{}» старое значение «{}»",
+                    film.getId(), film.getMpa(), oldFilm.getMpa());
+        }
+        if (film.getGenres() != null) {
+            candidateFilm.setGenres(film.getGenres());
+            log.debug("FilmId = {} изменился параметр Genres. Новое значение «{}» старое значение «{}»",
+                    film.getId(), film.getGenres(), oldFilm.getGenres());
+        }
+
 
         validateFilm(candidateFilm);
         log.debug("Фильм id = {} прошел валидацию при обновлении", candidateFilm.getId());
