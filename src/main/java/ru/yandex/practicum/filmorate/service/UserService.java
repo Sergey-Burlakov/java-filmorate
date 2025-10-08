@@ -2,10 +2,12 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.dal.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -13,9 +15,12 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final UserStorage storage;
+
+    public UserService(@Qualifier("userDbStorage") UserStorage storage) {
+        this.storage = storage;
+    }
 
     public Collection<User> findAll() {
         log.trace("Поступил запрос на вывод всех пользователей из хранилища");
@@ -36,7 +41,8 @@ public class UserService {
             throw new IllegalArgumentException();
         }
 
-        User oldUser = storage.findById(user.getId());
+        User oldUser = storage.findById(user.getId()).orElseThrow(() ->
+                new NotFoundException("Пользователь не найден"));
         User candidateUser = new User(oldUser);
 
         if (user.getEmail() != null && (!user.getEmail().isBlank())) {
@@ -96,7 +102,8 @@ public class UserService {
 
     public List<User> getFriends(long id) {
         log.trace("Поступил запрос на получение списка друзей");
-        storage.findById(id);
+        storage.findById(id).orElseThrow(() ->
+                new NotFoundException("Пользователь не найден"));;
         return storage.getFriends(id);
     }
 
@@ -113,8 +120,10 @@ public class UserService {
     }
 
     private void checkIds(long firstId, long secondId) {
-        storage.findById(firstId);
-        storage.findById(secondId);
+        storage.findById(firstId).orElseThrow(() ->
+                new NotFoundException("Пользователь не найден"));;
+        storage.findById(secondId).orElseThrow(() ->
+                new NotFoundException("Пользователь не найден"));;
     }
 
 

@@ -1,26 +1,40 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dal.film.FilmStorage;
+import ru.yandex.practicum.filmorate.dal.genre.GenreStorage;
+import ru.yandex.practicum.filmorate.dal.mpa.MpaStorage;
+import ru.yandex.practicum.filmorate.dal.user.UserStorage;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class FilmService {
     private static final LocalDate MOVIE_BIRTHDAY = LocalDate.of(1895, Month.DECEMBER, 28);
     private final FilmStorage storageFilm;
     private final UserStorage storageUser;
+    private final GenreStorage storageGenre;
+    private final MpaStorage storageMpa;
+
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage storageFilm, @Qualifier("userDbStorage")
+                       UserStorage storageUser, @Qualifier("genreDbStorage") GenreStorage genreStorage,
+                       @Qualifier("mpaDbStorage") MpaStorage mpaStorage) {
+        this.storageFilm = storageFilm;
+        this.storageUser = storageUser;
+        this.storageGenre = genreStorage;
+        this.storageMpa = mpaStorage;
+    }
 
     public Collection<Film> findAll() {
         log.trace("Поступил запрос на вывод всех фильмов из хранилища");
@@ -31,6 +45,19 @@ public class FilmService {
         log.trace("Поступил запрос на добавление фильма");
         validateFilm(film);
         log.debug("Фильм name = «{}» прошел валидацию при создании", film.getName());
+        if (storageMpa.findById(film.getMpa().getId()).isEmpty()) {
+            String message = "При сохранении фильма не удалось найти рейтинг";
+            log.error(message);
+            throw new NotFoundException(message);
+        }
+        Set<Genre> genres = film.getGenres();
+        for (Genre g : genres){
+            if (storageGenre.findById(g.getId()).isEmpty()){
+                String message = "При сохранении фильма не удалось найти жанр";
+                log.error(message);
+                throw new NotFoundException(message);
+            }
+        }
         return storageFilm.create(film);
     }
 
@@ -42,7 +69,9 @@ public class FilmService {
             throw new IllegalArgumentException(message);
         }
 
-        Film oldFilm = storageFilm.findById(film.getId());
+        Film oldFilm = storageFilm.findById(film.getId()).orElseThrow(() ->
+                new NotFoundException("Фильм не найден"));
+
         Film candidateFilm = new Film(oldFilm);
 
         if (film.getName() != null && (!film.getName().isBlank())) {
@@ -76,12 +105,27 @@ public class FilmService {
                     film.getId(), film.getGenres(), oldFilm.getGenres());
         }
 
+        if (storageMpa.findById(candidateFilm.getMpa().getId()).isEmpty()) {
+            String message = "При обновлении фильма не удалось найти рейтинг";
+            log.error(message);
+            throw new NotFoundException(message);
+        }
+        Set<Genre> genres = candidateFilm.getGenres();
+        for (Genre g : genres){
+            if (storageGenre.findById(g.getId()).isEmpty()){
+                String message = "При обновлении фильма не удалось найти жанр";
+                log.error(message);
+                throw new NotFoundException(message);
+            }
+        }
+
 
         validateFilm(candidateFilm);
         log.debug("Фильм id = {} прошел валидацию при обновлении", candidateFilm.getId());
 
         storageFilm.update(candidateFilm);
         log.info("Фильм Id = {}, Name = {} успешно обновлен", candidateFilm.getId(), candidateFilm.getName());
+
         return candidateFilm;
     }
 
@@ -101,24 +145,12 @@ public class FilmService {
 
     public List<Film> getPopular(int count) {
         log.trace("Поступил запрос на вывод топ {} фильмов", count);
-
-        Comparator<Film> byLike = new Comparator<Film>() {
-            @Override
-            public int compare(Film film1, Film film2) {
-                return Integer.compare(storageFilm.getCountLikes(film2.getId()), storageFilm.getCountLikes(film1.getId()));
-            }
-        };
-
         if (count <= 0) {
             String message = "Количество не может быть равно нулю или отрицательным";
             log.error(message);
             throw new IllegalArgumentException(message);
         }
-        return storageFilm.findAll()
-                .stream()
-                .sorted(byLike)
-                .limit(count)
-                .toList();
+        return storageFilm.getPopularFilms(count);
     }
 
     private void chekFilmUserId(long filmId, long userId) {

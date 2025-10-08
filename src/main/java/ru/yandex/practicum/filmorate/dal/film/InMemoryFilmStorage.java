@@ -1,6 +1,7 @@
-package ru.yandex.practicum.filmorate.storage.film;
+package ru.yandex.practicum.filmorate.dal.film;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -34,11 +35,25 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
-    public Film findById(Long id) {
-        if (films.containsKey(id)) {
-            return films.get(id);
-        }
-        throw new NotFoundException("Id не найден");
+    @Override
+    public List<Film> getPopularFilms(int count){
+
+        Comparator<Film> byLike = new Comparator<Film>() {
+            @Override
+            public int compare(Film film1, Film film2) {
+                return Integer.compare(getCountLikes(film2.getId()), getCountLikes(film1.getId()));
+            }
+        };
+
+        return findAll()
+                .stream()
+                .sorted(byLike)
+                .limit(count)
+                .toList();
+    }
+
+    public Optional<Film> findById(Long id) {
+        return Optional.ofNullable(films.get(id));
     }
 
     public void setLike(long filmId, long userId) {
