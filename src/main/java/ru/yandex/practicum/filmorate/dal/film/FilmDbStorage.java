@@ -29,7 +29,7 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
     private static final String FIND_ALL_QUERY = "SELECT f.*, m.name AS mpa_name FROM films AS f JOIN mpa AS m ON f.mpa_id = m.id";
     private static final String FIND_GENRES_BY_FILM = "SELECT * FROM   genres AS g JOIN film_genres AS fg ON g.id = fg.genre_id WHERE  fg.film_id = ? ORDER BY g.id ASC";
     private static final String GET_TOP_POPULAR_QUERY = "SELECT f.*, m.name AS mpa_name FROM films AS f JOIN mpa AS m ON f.mpa_id = m.id LEFT JOIN( SELECT film_id, COUNT(id_user) AS likes_count FROM film_likes GROUP BY film_id ) AS likes_rating ON f.id = likes_rating.film_id ORDER BY likes_rating.likes_count DESC LIMIT ?";
-
+    //private static final String GET_TOP_POPULAR_QUERY = "SELECT f.*, m.name AS mpa_name FROM films AS f JOIN mpa AS m ON f.mpa_id = m.id LEFT JOIN( SELECT id_film, COUNT(id_user) AS likes_count FROM film_likes GROUP BY id_film ) AS likes_rating ON f.id = likes_rating.id_film ORDER BY COALESCE(likes_rating.likes_count, 0) DESC LIMIT ?";
     private static final String COUNT_LIKES_QUERY = "COUNT * FROM film_genres WHERE film_id = ?";
 
     private final GenreRowMapper genreRowMapper;
@@ -97,7 +97,7 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
         Optional<Film> filmOptional = findOne(FIND_BY_ID_QUERY, id);
         if (filmOptional.isPresent()) {
             Film film = filmOptional.get();
-            film.setGenres(new HashSet<>(jdbc.query(
+            film.setGenres(new LinkedHashSet<>(jdbc.query(
                     FIND_GENRES_BY_FILM,
                     genreRowMapper,
                     film.getId()

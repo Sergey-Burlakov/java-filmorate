@@ -19,7 +19,7 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Mpa mpa;
-    Set<Genre> genres = new LinkedHashSet<>();
+    LinkedHashSet<Genre> genres = new LinkedHashSet<>();
 
     // Конструктор копирования
     public Film(Film other) {

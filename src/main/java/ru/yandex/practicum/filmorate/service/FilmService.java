@@ -15,6 +15,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -110,7 +111,7 @@ public class FilmService {
             log.error(message);
             throw new NotFoundException(message);
         }
-        Set<Genre> genres = candidateFilm.getGenres();
+        LinkedHashSet<Genre> genres = candidateFilm.getGenres();
         for (Genre g : genres){
             if (storageGenre.findById(g.getId()).isEmpty()){
                 String message = "При обновлении фильма не удалось найти жанр";

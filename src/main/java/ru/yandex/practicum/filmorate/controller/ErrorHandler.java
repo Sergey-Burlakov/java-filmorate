@@ -28,6 +28,14 @@ public class ErrorHandler {
         );
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse illegalArgument(final IllegalArgumentException e) {
+        return new ErrorResponse(
+                e.getMessage()
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleServerError(final Exception e) {
