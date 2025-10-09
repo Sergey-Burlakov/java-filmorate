@@ -51,7 +51,6 @@ public class BaseRepository<T> {
             }
             return ps;
         }, keyHolder);
-
         Long id = keyHolder.getKeyAs(Long.class);
         if (id != null) {
             return id;
@@ -79,7 +78,7 @@ public class BaseRepository<T> {
     //получить количество
     protected Optional<Integer> getCount(String query, Object... params){
         try {
-            return Optional.ofNullable(jdbc.queryForObject(query, Integer.class, params)) ;
+            return Optional.ofNullable(jdbc.queryForObject(query, Integer.class, params));
         } catch (EmptyResultDataAccessException e) {
             return Optional.of(0);
         }
