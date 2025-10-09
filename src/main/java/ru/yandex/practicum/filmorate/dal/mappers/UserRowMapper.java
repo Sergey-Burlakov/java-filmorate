@@ -20,7 +20,7 @@ public class UserRowMapper implements RowMapper<User> {
 
         Date birthday = resultSet.getDate("birthday");
 
-        if (birthday != null){
+        if (birthday != null) {
             user.setBirthday(birthday.toLocalDate());
         }
 
