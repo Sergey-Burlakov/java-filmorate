@@ -16,7 +16,7 @@ public class MpaDbStorage extends BaseRepository<Mpa> implements MpaStorage {
     private static final String FIND_ALL_QUERY = "SELECT * FROM mpa";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM mpa WHERE id = ?";
 
-    public MpaDbStorage(JdbcTemplate jdbc, MpaRowMapper mapper){
+    public MpaDbStorage(JdbcTemplate jdbc, MpaRowMapper mapper) {
         super(jdbc, mapper, Mpa.class);
     }
 
