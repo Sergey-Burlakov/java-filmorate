@@ -76,7 +76,7 @@ public class BaseRepository<T> {
     }
 
     //получить количество
-    protected Optional<Integer> getCount(String query, Object... params){
+    protected Optional<Integer> getCount(String query, Object... params) {
         try {
             return Optional.ofNullable(jdbc.queryForObject(query, Integer.class, params));
         } catch (EmptyResultDataAccessException e) {
