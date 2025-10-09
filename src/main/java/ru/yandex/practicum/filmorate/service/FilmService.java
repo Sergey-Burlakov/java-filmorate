@@ -42,6 +42,12 @@ public class FilmService {
         return storageFilm.findAll();
     }
 
+    public Film findById(long id) {
+        log.trace("Поступил запрос на получение фильма ID = «{}»", id);
+        return storageFilm.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Фильм с ID = %d не найден",id)));
+    }
+
     public Film create(Film film) {
         log.trace("Поступил запрос на добавление фильма");
         validateFilm(film);
