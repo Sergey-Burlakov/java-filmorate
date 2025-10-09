@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.dal.mappers.MpaRowMapper;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Repository

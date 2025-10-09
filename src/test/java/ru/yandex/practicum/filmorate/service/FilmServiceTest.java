@@ -2,12 +2,12 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.dal.film.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.dal.genre.InMemoryGenreStorage;
 import ru.yandex.practicum.filmorate.dal.mpa.InMemoryMpaStorage;
+import ru.yandex.practicum.filmorate.dal.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.dal.film.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.dal.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -27,7 +27,7 @@ class FilmServiceTest {
         userStorage = new InMemoryUserStorage();
         genreStorage = new InMemoryGenreStorage();
         mpaStorage = new InMemoryMpaStorage();
-        filmService = new FilmService(filmStorage, userStorage, genreStorage,mpaStorage);
+        filmService = new FilmService(filmStorage, userStorage, genreStorage, mpaStorage);
     }
 
     @Test

@@ -17,14 +17,14 @@ public class GenreController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public Collection<Genre> findAll(){
+    public Collection<Genre> findAll() {
         return service.findAll();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public Genre findById(@PathVariable("id") int id){
+    public Genre findById(@PathVariable("id") int id) {
         return service.findById(id).orElseThrow(() ->
-        new NotFoundException(String.format("Жанр с ID = %d не найден",id)));
+                new NotFoundException(String.format("Жанр с ID = %d не найден", id)));
     }
 }
