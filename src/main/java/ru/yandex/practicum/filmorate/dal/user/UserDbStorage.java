@@ -25,7 +25,7 @@ public class UserDbStorage extends BaseRepository<User> implements UserStorage {
     private static final String FIND_FRIENDS_QUERY = "SELECT u.* FROM users AS u JOIN friendships AS f ON u.id = f.id_user2 WHERE f.id_user1 = ?";
     private static final String GET_MUTUAL_FRIENDS_QUERY = "SELECT u.* FROM users AS u JOIN friendships AS f1 ON u.id = f1.id_user2 JOIN friendships AS f2 ON u.id = f2.id_user2 WHERE f1.id_user1 = ? AND f2.id_user1 = ?";
 
-    public UserDbStorage(JdbcTemplate jdbc, UserRowMapper mapper){
+    public UserDbStorage(JdbcTemplate jdbc, UserRowMapper mapper) {
         super(jdbc, mapper, User.class);
     }
 
