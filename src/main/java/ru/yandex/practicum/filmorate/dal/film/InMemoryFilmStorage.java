@@ -35,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> getPopularFilms(int count){
+    public List<Film> getPopularFilms(int count) {
 
         Comparator<Film> byLike = new Comparator<Film>() {
             @Override
