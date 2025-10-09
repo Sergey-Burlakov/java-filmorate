@@ -11,10 +11,10 @@ import java.util.Set;
 
 @Qualifier("inMemoryMpaStorage")
 @Repository
-public class InMemoryMpaStorage implements MpaStorage{
+public class InMemoryMpaStorage implements MpaStorage {
     private final Set<Mpa> mpaSet = new HashSet<>();
 
-    public InMemoryMpaStorage(){
+    public InMemoryMpaStorage() {
         mpaSet.add(new Mpa(1, "G"));
         mpaSet.add(new Mpa(2, "PG"));
         mpaSet.add(new Mpa(3, "PG-13"));
