@@ -137,7 +137,7 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
     }
 
     @Override
-    public List<Film> getPopularFilms(int count){
+    public List<Film> getPopularFilms(int count) {
        return findMany(
                 GET_TOP_POPULAR_QUERY,
                 count
