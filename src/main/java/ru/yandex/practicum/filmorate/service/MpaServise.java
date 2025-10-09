@@ -14,16 +14,16 @@ import java.util.Optional;
 public class MpaServise {
     private final MpaStorage storage;
 
-    public MpaServise(@Qualifier("mpaDbStorage") MpaStorage storage){
+    public MpaServise(@Qualifier("mpaDbStorage") MpaStorage storage) {
         this.storage = storage;
     }
 
-    public Collection<Mpa> findAll(){
+    public Collection<Mpa> findAll() {
         log.trace("Поступил запрос на вывод всех рейтингов из хранилища");
         return storage.findAll();
     }
 
-    public Optional<Mpa> findById(int id){
+    public Optional<Mpa> findById(int id) {
         log.trace("Поступил запрос на получение рейтинга ID = «{}»", id);
         return storage.findById(id);
     }
