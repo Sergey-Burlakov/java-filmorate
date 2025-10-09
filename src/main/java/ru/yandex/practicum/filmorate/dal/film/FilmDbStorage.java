@@ -20,7 +20,7 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
     private static final String INSERT_FILM_GENRES_QUERY = "INSERT INTO film_genres(film_id, genre_id) VALUES(?, ?)";
     private static final String INSERT_LIKE_QUERY = "INSERT INTO film_likes(id_film, id_user) VALUES(?, ?)";
     private static final String DELETE_FILM_GENRES_QUERY = "DELETE FROM film_genres WHERE film_id = ?";
-    private static final String DELETE_LIKE_QUERY = "DELETE FROM film_likes WHERE film_id = ? AND id_user = ?";
+    private static final String DELETE_LIKE_QUERY = "DELETE FROM film_likes WHERE id_film = ? AND id_user = ?";
     private static final String UPDATE_QUERY = "UPDATE films SET name = ?, description = ?, release_date = ?," +
             " duration = ?, mpa_id = ?  WHERE id = ?";
     private static final String FIND_BY_ID_QUERY = "SELECT f.*, m.name AS mpa_name FROM films AS f JOIN mpa AS m ON" +
