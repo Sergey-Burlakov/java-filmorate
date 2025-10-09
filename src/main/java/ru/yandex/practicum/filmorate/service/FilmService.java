@@ -58,8 +58,8 @@ public class FilmService {
             throw new NotFoundException(message);
         }
         Set<Genre> genres = film.getGenres();
-        for (Genre g : genres){
-            if (storageGenre.findById(g.getId()).isEmpty()){
+        for (Genre g : genres) {
+            if (storageGenre.findById(g.getId()).isEmpty()) {
                 String message = "При сохранении фильма не удалось найти жанр";
                 log.error(message);
                 throw new NotFoundException(message);
@@ -118,8 +118,8 @@ public class FilmService {
             throw new NotFoundException(message);
         }
         LinkedHashSet<Genre> genres = candidateFilm.getGenres();
-        for (Genre g : genres){
-            if (storageGenre.findById(g.getId()).isEmpty()){
+        for (Genre g : genres) {
+            if (storageGenre.findById(g.getId()).isEmpty()) {
                 String message = "При обновлении фильма не удалось найти жанр";
                 log.error(message);
                 throw new NotFoundException(message);
