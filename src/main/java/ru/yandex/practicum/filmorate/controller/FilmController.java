@@ -58,4 +58,9 @@ public class FilmController {
         return service.getPopular(count);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    public Film findById(@PathVariable long id) {
+        return service.findById(id);
+    }
 }
