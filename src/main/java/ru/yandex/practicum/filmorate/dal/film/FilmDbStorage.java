@@ -54,13 +54,7 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
                 film.getMpa().getId()
         );
         film.setId(id);
-
-        Set<Genre> genres = film.getGenres();
-        if (genres != null) {
-            for (Genre g : genres) {
-                addFilmGenres(id, g.getId());
-            }
-        }
+        addFilmGenres(film);
         return film;
     }
 
@@ -77,14 +71,7 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
         );
 
         delete(DELETE_FILM_GENRES_QUERY, film.getId());
-        Set<Genre> genres = film.getGenres();
-
-        if (genres != null) {
-            for (Genre g : genres) {
-                addFilmGenres(film.getId(), g.getId());
-            }
-        }
-
+        addFilmGenres(film);
         return findById(film.getId()).orElseThrow(() ->
                 new NotFoundException(String.format("Фильм id = %d при обновлении не найден", film.getId())));
     }
@@ -144,11 +131,17 @@ public class FilmDbStorage extends BaseRepository<Film> implements FilmStorage {
         );
     }
 
-    private void addFilmGenres(long filmId, int genreId) {
-        insert(
-                INSERT_FILM_GENRES_QUERY,
-                filmId,
-                genreId
-        );
+    private void addFilmGenres(Film film) {
+        Set<Genre> genres = film.getGenres();
+        if (genres.isEmpty()) {
+            return;
+        }
+
+        List<Object[]> batchArgs = genres.stream()
+                .map(genre -> new Object[]{film.getId(), genre.getId()})
+                .toList();
+
+        jdbc.batchUpdate(INSERT_FILM_GENRES_QUERY, batchArgs);
     }
+
 }
