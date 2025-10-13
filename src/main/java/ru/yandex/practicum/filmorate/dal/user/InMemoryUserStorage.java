@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.dal.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class InMemoryUserStorage implements UserStorage {
+public class InMemoryUserStorage implements UserStorage  {
 
     private final Map<Long, User> users = new HashMap<>();
     private final Map<Long, Set<Long>> friends = new HashMap<>();
@@ -71,11 +71,8 @@ public class InMemoryUserStorage implements UserStorage {
         return Collections.emptyList();
     }
 
-    public User findById(Long id) {
-        if (users.containsKey(id)) {
-            return users.get(id);
-        }
-        throw new NotFoundException("Id не найден");
+    public Optional<User> findById(Long userId) {
+            return Optional.ofNullable(users.get(userId));
     }
 
     private boolean chekId(long id) {

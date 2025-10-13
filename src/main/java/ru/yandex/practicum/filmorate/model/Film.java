@@ -5,8 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +17,7 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Mpa mpa;
-    Set<Genre> genres = new HashSet<>();
+    LinkedHashSet<Genre> genres = new LinkedHashSet<>();
 
     // Конструктор копирования
     public Film(Film other) {
@@ -28,6 +27,6 @@ public class Film {
         this.releaseDate = other.releaseDate;
         this.duration = other.duration;
         this.mpa = other.mpa;
-        this.genres = new HashSet<>(other.genres);
+        this.genres = new LinkedHashSet<>(other.genres);
     }
 }

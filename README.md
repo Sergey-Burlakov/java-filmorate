@@ -6,7 +6,7 @@
 
 Ниже представлена ER-диаграмма (Entity-Relationship Diagram), которая визуализирует таблицы, их поля и связи между ними.
 
-![ER-диаграмма базы данных Filmorate](filmorate_db_schema.png)
+![ER-диаграмма базы данных Filmorate](filmorate_db_schema.jpg)
 
 ## Примеры SQL-запросов
 
@@ -29,42 +29,17 @@ ORDER BY
 LIMIT 10;
 ```
 ### 2. Получение всех друзей пользователя (для пользователя с ID = 5)
-Запрос использует UNION для объединения двух выборок: случаев, когда пользователь является инициатором дружбы, и случаев, когда он является принимающей стороной.
+Запрос находит всех пользователей, которых пользователь с ID=5 добавил в друзья
 ```sql
 SELECT u.id, u.login
 FROM users AS u
 INNER JOIN friendships AS fr ON u.id = fr.id_user2
 WHERE fr.id_user1 = 5
-
-UNION
-
-SELECT u.id, u.login
-FROM users AS u
-INNER JOIN friendships AS fr ON u.id = fr.id_user1
-WHERE fr.id_user2 = 5;
 ```
 ### 3. Получение общих друзей для двух пользователей (для ID = 1 и ID = 2)
 Запрос находит пересечение (INTERSECT) двух списков друзей: сначала получаются все друзья для пользователя 1, затем для пользователя 2, после чего находятся только общие записи.
 ```sql
-(SELECT u.id, u.login
- FROM users AS u
- INNER JOIN friendships AS fr ON u.id = fr.id_user2
- WHERE fr.id_user1 = 1
- UNION
- SELECT u.id, u.login
- FROM users AS u
- INNER JOIN friendships AS fr ON u.id = fr.id_user1
- WHERE fr.id_user2 = 1)
-
+(SELECT u.* FROM users u JOIN friendships f ON u.id = f.id_user2 WHERE f.id_user1 = 1)
 INTERSECT
-
-(SELECT u.id, u.login
- FROM users AS u
- INNER JOIN friendships AS fr ON u.id = fr.id_user2
- WHERE fr.id_user1 = 2
- UNION
- SELECT u.id, u.login
- FROM users AS u
- INNER JOIN friendships AS fr ON u.id = fr.id_user1
- WHERE fr.id_user2 = 2);
+(SELECT u.* FROM users u JOIN friendships f ON u.id = f.id_user2 WHERE f.id_user1 = 2)
 ```
